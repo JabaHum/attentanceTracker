@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Attentance Tracker</string>
+    <string name="enter_course_unit">Enter Course Unit</string>
+    <string name="enter_year_of_study">Enter Year of Study</string>
+    <string name="enter_student_number">Enter Student Number</string>
+    <string name="attendance_application">Attendance Application</string>
+    <string name="take_attendance">Take Attendance</string>
+    <string name="download_files">Download Files</string>
+    <string name="action_settings">Settings</string>
+    <string name="btn_manage">manage</string>
+    <string name="btn_view_attendance">view attendance</string>
+</resources>
