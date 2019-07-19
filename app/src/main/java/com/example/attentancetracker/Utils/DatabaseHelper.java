@@ -156,4 +156,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return deleteCourse(id);
     }
+
+    // Updating single data
+    public  int updateStudentsData(Students students) {
+
+        //final SQLiteDatabase db = open();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        ContentValues values = new ContentValues();
+        values.put(COL_2, students.getStudentsRegno());
+        values.put(COL_3, students.getStudentsName());
+        values.put(COL_8,students.getStudentsProgram());
+        values.put(COL_9,students.getStudentsSex());
+
+
+        // updating row
+        return db.update(TABLE_STUDENTS, values, COL_1 + " = ?",
+                new String[] { String.valueOf(students.getId()) });
+    }
 }
