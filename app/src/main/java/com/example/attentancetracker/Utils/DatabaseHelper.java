@@ -2,12 +2,16 @@ package com.example.attentancetracker.Utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.attentancetracker.Model.CourseUnits;
 import com.example.attentancetracker.Model.Students;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -131,6 +135,70 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+
+    //get Students and course Units Data
+    //Get students Data
+    public  List<Students> getAllStudentsData(){
+        List<Students> studentsList = new ArrayList<>();
+
+        //select all qurery
+
+        String selectQuery = "SELECT *FROM " + TABLE_STUDENTS;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        // looping through all and adding to a list
+
+        if (cursor.moveToFirst()){
+            do {
+                studentsList.add(new Students(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4)
+
+
+                ));
+
+                //students.setStudentsRegno(cursor.getString(0));
+                //students.setStudentsName(cursor.getString(1));
+                //students.setStudentsSex(cursor.getString(2));
+                //students.setStudentsProgram(cursor.getString(4));
+
+                //adding students to list
+                //studentsList.add(students);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return studentsList;
+    }
+    // Get all Course Data
+
+    private void getAllCourseData(CourseUnits courseUnits){
+        String selectQuery = "SELECT * FROM "+TABLE_COURSE_UNITS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        if (cursor.moveToFirst()){
+            do {
+                courseUnits.setId(cursor.getInt(0));
+                courseUnits.setCourseNo(cursor.getString(1));
+                courseUnits.setCourseUnit(cursor.getString(2));
+                courseUnits.setCourseSemester(cursor.getString(3));
+                courseUnits.setCourseLecturer(cursor.getString(4));
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        //cursor.getInt(0);
+        //cursor.getString(1);
+        ////cursor.getString(2);
+        //cursor.getString(3);
+        //cursor.getString(4);
+    }
+
     //delete methods for both students and course Units
 
     //delete method for students table
@@ -157,7 +225,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return deleteCourse(id);
     }
 
-    // Updating single data
+    // Updating single Student data
     public  int updateStudentsData(Students students) {
 
         //final SQLiteDatabase db = open();
@@ -175,4 +243,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.update(TABLE_STUDENTS, values, COL_1 + " = ?",
                 new String[] { String.valueOf(students.getId()) });
     }
+
+    // Updating single cousre  data
+    public  int updateCourseUnitsData(CourseUnits courseUnits) {
+
+        //final SQLiteDatabase db = open();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        ContentValues values = new ContentValues();
+        values.put(COL_5,courseUnits.getCourseNo());
+        values.put(COL_4,courseUnits.getCourseUnit());
+        values.put(COL_6,courseUnits.getCourseLecturer());
+        values.put(COL_10,courseUnits.getCourseSemester());
+
+
+        // updating row
+        return db.update(TABLE_COURSE_UNITS, values, COL_1 + " = ?",
+                new String[] { String.valueOf(courseUnits.getId()) });
+    }
+
 }
